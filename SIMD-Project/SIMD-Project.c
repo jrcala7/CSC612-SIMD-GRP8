@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <math.h>
+#include <time.h>
 
 extern void ymm_vector_add();
 extern void xmm_vector_add();
@@ -23,9 +24,118 @@ double VectorSum(double A[], int len) {
 	return ret;
 }
 
+double TestCVectorSum(double A[], int len, size_t testCounts, double PCFreq) {
+	double totalTime = 0;
+	LARGE_INTEGER li = {};
+	long long int start, end;
+	double elapse;
+
+	for (int i = 0; i < testCounts; i++) {
+		QueryPerformanceCounter(&li);
+		start = li.QuadPart;
+
+		VectorSum(A, len);
+
+		QueryPerformanceCounter(&li);
+		end = li.QuadPart;
+
+		elapse = ((double)(end - start)) * 1000.0 / PCFreq;
+		printf("Test %u: Time in C = %f ms\n", (i+1), elapse);
+
+		totalTime += elapse;
+	}
+
+	return totalTime / (double)testCounts;
+}
+
+//Using YMM Registers
+double TestYMMVectorSum(double A[], int len, size_t testCounts, double PCFreq) {
+	double totalTime = 0;
+	LARGE_INTEGER li = {};
+	long long int start, end;
+	double elapse;
+
+	for (int i = 0; i < testCounts; i++) {
+		QueryPerformanceCounter(&li);
+		start = li.QuadPart;
+
+		//Vector Sum Function Here
+		ymm_vector_add();
+
+		QueryPerformanceCounter(&li);
+		end = li.QuadPart;
+
+		elapse = ((double)(end - start)) * 1000.0 / PCFreq;
+		printf("Test %u: Time in YMM = %f ms\n", (i + 1), elapse);
+
+		totalTime += elapse;
+	}
+
+	return totalTime / (double)testCounts;
+}
+
+//Using XMM Registers
+double TestXMMVectorSum(double A[], int len, size_t testCounts, double PCFreq) {
+	double totalTime = 0;
+	LARGE_INTEGER li = {};
+	long long int start, end;
+	double elapse;
+
+	for (int i = 0; i < testCounts; i++) {
+		QueryPerformanceCounter(&li);
+		start = li.QuadPart;
+
+		//Vector Sum Function Here
+		xmm_vector_add();
+
+		QueryPerformanceCounter(&li);
+		end = li.QuadPart;
+
+		elapse = ((double)(end - start)) * 1000.0 / PCFreq;
+		printf("Test %u: Time in XMM = %f ms\n", (i + 1), elapse);
+
+		totalTime += elapse;
+	}
+
+	return totalTime / (double)testCounts;
+}
+
+//Using x86_64 Registers
+double TestX86VectorSum(double A[], int len, size_t testCounts, double PCFreq) {
+	double totalTime = 0;
+	LARGE_INTEGER li = {};
+	long long int start, end;
+	double elapse;
+
+	for (int i = 0; i < testCounts; i++) {
+		QueryPerformanceCounter(&li);
+		start = li.QuadPart;
+
+		//Vector Sum Function Here
+		x86_vector_add();
+
+		QueryPerformanceCounter(&li);
+		end = li.QuadPart;
+
+		elapse = ((double)(end - start)) * 1000.0 / PCFreq;
+		printf("Test %u: Time in x86_64 = %f ms\n", (i + 1), elapse);
+
+		totalTime += elapse;
+	}
+
+	return totalTime / (double)testCounts;
+}
+
 int main(int argc, char* argv[]) {
 	//Vector array to create
 	double vec[VECTOR_LEN];
+
+	//Initialize performace counter
+	LARGE_INTEGER li = {};
+	long long int start, end;
+	double PCFreq, elapse, elapse1;
+	QueryPerformanceFrequency(&li);
+	PCFreq = (double)(li.QuadPart);
 
 	//Creates the vector to pass
 	for (int i = 0; i < VECTOR_LEN; i++) {
@@ -33,12 +143,30 @@ int main(int argc, char* argv[]) {
 		printf("Vector[%u]: %f\n", i, vec[i]);
 	}
 
-	double c_sum = VectorSum(vec, VECTOR_LEN);
-	printf("Vec sum in C: %f\n", c_sum);
+	double C_VecSum = VectorSum(vec, VECTOR_LEN);
 
-	ymm_vector_add();
-	xmm_vector_add();
-	x86_vector_add();
+	size_t testCounts = 30;
+	printf("\nTesting in C\n");
+	double aveTimeC = TestCVectorSum(vec, VECTOR_LEN, testCounts, PCFreq);
+	printf("\nTesting in YMM\n");
+	double aveTimeYMM = TestYMMVectorSum(vec, VECTOR_LEN, testCounts, PCFreq);
+	printf("\nTesting in XMM\n");
+	double aveTimeXMM = TestXMMVectorSum(vec, VECTOR_LEN, testCounts, PCFreq);
+	printf("\nTesting in x86_64\n");
+	double aveTimeX86 = TestX86VectorSum(vec, VECTOR_LEN, testCounts, PCFreq);
+	
+	printf("\nOutput after %u tests\n", (int)testCounts);
+	printf("\nVector Sum in C: %f\n", C_VecSum);
+	printf("Average Time after %u tests in C: %f\n", (int)testCounts, aveTimeC);
+
+	printf("\nVector Sum in YMM: %f\n", 0.f);
+	printf("Average Time after %u tests in YMM: %f\n", (int)testCounts, aveTimeYMM);
+
+	printf("\nVector Sum in XMM: %f\n", 0.f);
+	printf("Average Time after %u tests in XMM: %f\n", (int)testCounts, aveTimeXMM);
+
+	printf("\nVector Sum in x86_64: %f\n", 0.f);
+	printf("Average Time after %u tests in x86_64: %f\n", (int)testCounts, aveTimeX86);
 
 	return 0;
 }
