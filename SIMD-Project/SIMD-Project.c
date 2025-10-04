@@ -8,7 +8,7 @@
 #include <math.h>
 #include <time.h>
 
-extern void ymm_vector_add();
+extern void ymm_vector_add(size_t n, double* ans, double* vec);
 extern void xmm_vector_add();
 extern void x86_vector_add();
 
@@ -54,13 +54,14 @@ double TestYMMVectorSum(double A[], int len, size_t testCounts, double PCFreq) {
 	LARGE_INTEGER li = {};
 	long long int start, end;
 	double elapse;
+	double ans[4];
 
 	for (int i = 0; i < testCounts; i++) {
 		QueryPerformanceCounter(&li);
 		start = li.QuadPart;
 
 		//Vector Sum Function Here
-		ymm_vector_add();
+		ymm_vector_add(testCounts, &ans, &A);
 
 		QueryPerformanceCounter(&li);
 		end = li.QuadPart;
