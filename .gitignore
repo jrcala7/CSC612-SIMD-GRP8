@@ -55,3 +55,5 @@ dkms.conf
 *.dwo
 SIMD-Project/SIMD-Project/x64
 SIMD-Project/.vs
+/.vs/CSC612-SIMD-GRP8/v17/.wsuo
+/.vs/CSC612-SIMD-GRP8/v17/DocumentLayout.json
