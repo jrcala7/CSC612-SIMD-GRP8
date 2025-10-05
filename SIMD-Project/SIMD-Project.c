@@ -8,7 +8,7 @@
 #include <math.h>
 #include <time.h>
 
-extern void ymm_vector_add();
+extern void ymm_vector_add(size_t n, double* ans, double* vec);
 extern double xmm_vector_add(int len, double* A);
 extern void x86_vector_add();
 
@@ -51,24 +51,21 @@ double TestCVectorSum(double A[], int len, size_t testCounts, double PCFreq) {
 //Using YMM Registers
 double TestYMMVectorSum(double A[], int len, size_t testCounts, double PCFreq) {
 	double totalTime = 0;
-	LARGE_INTEGER li = {};
-	long long int start, end;
-	double elapse;
+	LARGE_INTEGER start, end, elapsed;
+	double ans[4];
 
 	for (int i = 0; i < testCounts; i++) {
-		QueryPerformanceCounter(&li);
-		start = li.QuadPart;
+		QueryPerformanceCounter(&start);
 
 		//Vector Sum Function Here
-		ymm_vector_add();
+		ymm_vector_add(testCounts, &ans, &A);
 
-		QueryPerformanceCounter(&li);
-		end = li.QuadPart;
-
-		elapse = ((double)(end - start)) * 1000.0 / PCFreq;
-		printf("Test %u: Time in YMM = %f ms\n", (i + 1), elapse);
-
-		totalTime += elapse;
+		QueryPerformanceCounter(&end);
+		elapsed.QuadPart = (end.QuadPart - start.QuadPart);
+		;; printf("%llu - %llu = %llu \n", end.QuadPart, start.QuadPart, elapsed.QuadPart);
+		//printf("Test %u: Time in YMM = %Lf ms\n", (i + 1), elapse);
+		
+		totalTime += elapsed.QuadPart * 1000.0 / PCFreq;
 	}
 
 	return totalTime / (double)testCounts;
@@ -143,7 +140,7 @@ double TestX86VectorSum(double A[], int len, size_t testCounts, double PCFreq) {
 
 int main(int argc, char* argv[]) {
 	//Vector array to create
-	double vec[VECTOR_LEN];
+	double *vec = malloc(VECTOR_LEN * sizeof(double));
 
 	//Initialize performace counter
 	LARGE_INTEGER li = {};
