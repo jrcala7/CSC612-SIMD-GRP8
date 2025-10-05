@@ -9,7 +9,7 @@
 #include <time.h>
 
 extern void ymm_vector_add();
-extern void xmm_vector_add();
+extern double xmm_vector_add(int len, double* A);
 extern void x86_vector_add();
 
 //Length of the vector
@@ -75,18 +75,22 @@ double TestYMMVectorSum(double A[], int len, size_t testCounts, double PCFreq) {
 }
 
 //Using XMM Registers
-double TestXMMVectorSum(double A[], int len, size_t testCounts, double PCFreq) {
+//Using XMM Registers
+double* TestXMMVectorSum(double A[], int len, size_t testCounts, double PCFreq, double validate) {
+	static double retunResult[2]; // static so it persists after function returns
 	double totalTime = 0;
 	LARGE_INTEGER li = {};
 	long long int start, end;
 	double elapse;
+	double result;
 
 	for (int i = 0; i < testCounts; i++) {
 		QueryPerformanceCounter(&li);
 		start = li.QuadPart;
+		// len = len / 2;
 
-		//Vector Sum Function Here
-		xmm_vector_add();
+		 //Vector Sum Function Here
+		result = xmm_vector_add(len, A);
 
 		QueryPerformanceCounter(&li);
 		end = li.QuadPart;
@@ -95,9 +99,20 @@ double TestXMMVectorSum(double A[], int len, size_t testCounts, double PCFreq) {
 		printf("Test %u: Time in XMM = %f ms\n", (i + 1), elapse);
 
 		totalTime += elapse;
-	}
 
-	return totalTime / (double)testCounts;
+		//validate
+		if (result == validate)
+		{
+			printf("Vector sum in XMM is correct. Sum: %f\n", result);
+		}
+		else
+		{
+			printf("Vector sum in XMM is incorrect. Sum: %f\n", result);
+		}
+	}
+	retunResult[0] = result;
+	retunResult[1] = totalTime / (double)testCounts;
+	return retunResult;
 }
 
 //Using x86_64 Registers
@@ -151,7 +166,7 @@ int main(int argc, char* argv[]) {
 	printf("\nTesting in YMM\n");
 	double aveTimeYMM = TestYMMVectorSum(vec, VECTOR_LEN, testCounts, PCFreq);
 	printf("\nTesting in XMM\n");
-	double aveTimeXMM = TestXMMVectorSum(vec, VECTOR_LEN, testCounts, PCFreq);
+	double* aveTimeXMM = TestXMMVectorSum(vec, VECTOR_LEN, testCounts, PCFreq, C_VecSum);
 	printf("\nTesting in x86_64\n");
 	double aveTimeX86 = TestX86VectorSum(vec, VECTOR_LEN, testCounts, PCFreq);
 	
@@ -162,8 +177,8 @@ int main(int argc, char* argv[]) {
 	printf("\nVector Sum in YMM: %f\n", 0.f);
 	printf("Average Time after %u tests in YMM: %f\n", (int)testCounts, aveTimeYMM);
 
-	printf("\nVector Sum in XMM: %f\n", 0.f);
-	printf("Average Time after %u tests in XMM: %f\n", (int)testCounts, aveTimeXMM);
+	printf("\nVector Sum in XMM: %f\n", aveTimeXMM[0]);
+	printf("Average Time after %u tests in XMM: %f\n", (int)testCounts, aveTimeXMM[1]);
 
 	printf("\nVector Sum in x86_64: %f\n", 0.f);
 	printf("Average Time after %u tests in x86_64: %f\n", (int)testCounts, aveTimeX86);
