@@ -19,7 +19,7 @@ extern void x86_vector_add();
 double VectorSum(double A[], int len) {
 	double ret = 0.0;
 	for (int i = 0; i < len; i++) {
-		ret += abs(A[i]);
+		ret += fabs(A[i]);
 	}
 	return ret;
 }
