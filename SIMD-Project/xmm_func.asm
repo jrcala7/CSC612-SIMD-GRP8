@@ -14,7 +14,7 @@ extern printf
 xmm_vector_add:   
     mov r8, rdx  
     mov eax, ecx  
-   ; mov ecx, eax
+    ;mov ecx, eax
     shr ecx, 1    
 
     vxorpd xmm1, xmm1, xmm1
@@ -30,8 +30,7 @@ L1:
     dec ecx
     jmp L1 
 
-LoopDone:
-    mov eax, eax
+LoopDone: 
     and eax, 1             
     cmp eax, 0
     je NoRemainder
@@ -42,13 +41,6 @@ LoopDone:
     
 NoRemainder:
     haddpd xmm1, xmm1 
-    movapd xmm0, xmm1 
-
-   ; SUB RSP, 8*5  
-      ;  LEA RCX, [msg_abssum] 
-     ;   movq rdx, xmm1  
-    ;    CALL printf  
-    
-   ; ADD RSP, 8*5
-
+    movapd xmm0, xmm1
+   
 	ret
