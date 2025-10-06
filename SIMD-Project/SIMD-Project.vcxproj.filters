@@ -29,5 +29,13 @@
     <CustomBuild Include="x86_64_func.asm">
       <Filter>Source Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="buffer.asm">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ymm_func_old.asm">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -140,9 +140,9 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ymm_func.obj</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">I:\NASM\nasm.exe -f win64 ymm_func.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ymm_func.obj</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\NASM\nasm.exe -f win64 ymm_func.asm</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">nasm.exe -f win64 ymm_func.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ymm_func.obj</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\NASM\nasm.exe -f win64 ymm_func.asm</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nasm.exe -f win64 ymm_func.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ymm_func.obj</Outputs>
     </CustomBuild>
   </ItemGroup>
@@ -157,9 +157,9 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">xmm_func.obj</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">I:\NASM\nasm.exe -f win64 xmm_func.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">xmm_func.obj</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\NASM\nasm.exe -f win64 xmm_func.asm</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">nasm.exe -f win64 xmm_func.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">xmm_func.obj</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\NASM\nasm.exe -f win64 xmm_func.asm</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nasm.exe -f win64 xmm_func.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">xmm_func.obj</Outputs>
     </CustomBuild>
   </ItemGroup>
@@ -174,11 +174,24 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">x86_64_func.obj</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">I:\NASM\nasm.exe -f win64 x86_64_func.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">x86_64_func.obj</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\NASM\nasm.exe -f win64 x86_64_func.asm</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">nasm.exe -f win64 x86_64_func.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">x86_64_func.obj</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\NASM\nasm.exe -f win64 x86_64_func.asm</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nasm.exe -f win64 x86_64_func.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">x86_64_func.obj</Outputs>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="buffer.asm">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nasm.exe -f win64 buffer.asm</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">buffer.obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">buffer.obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">nasm.exe -f win64 buffer.asm</Command>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ymm_func_old.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
