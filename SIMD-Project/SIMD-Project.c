@@ -10,7 +10,7 @@
 
 extern double ymm_vector_add(size_t n, double* vec);
 extern double xmm_vector_add(int len, double* A);
-extern void x86_vector_add();
+extern double x86_vector_add(size_t n, double* vec);
 extern void buffer_asm(size_t n, double* vec);
 
 //Length of the vector
@@ -127,7 +127,7 @@ double TestX86VectorSum(double A[], int len, size_t testCounts, double PCFreq) {
 		start = li.QuadPart;
 
 		//Vector Sum Function Here
-		x86_vector_add();
+		double result = x86_vector_add((size_t)len, A);
 
 		QueryPerformanceCounter(&li);
 		end = li.QuadPart;
@@ -187,6 +187,7 @@ int main(int argc, char* argv[]) {
 
 	double C_VecSum = VectorSum(vec, VECTOR_LEN);
 	double ymmSum = ymm_vector_add(VECTOR_LEN, vec);
+	double x86Sum = x86_vector_add(VECTOR_LEN, vec);
 
 	size_t testCounts = 100;
 	printf("\nTesting in C\n");
@@ -213,7 +214,7 @@ int main(int argc, char* argv[]) {
 	printf("\nVector Sum in XMM: %#f\n", aveTimeXMM[0]);
 	printf("Average Time after %u tests in XMM: %f ms\n", (int)testCounts, aveTimeXMM[1]);
 
-	printf("\nVector Sum in x86_64: %#f\n", 0.f);
+	printf("\nVector Sum in x86_64: %#f\n", x86Sum);
 	printf("Average Time after %u tests in x86_64: %f ms\n", (int)testCounts, aveTimeX86);
 
 	return 0;

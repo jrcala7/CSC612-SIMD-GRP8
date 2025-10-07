@@ -1,19 +1,34 @@
 ; assembly part using x86-64
-section .data
+bits 64
+default rel
 
-msg db "Hello World x86-64",13,10,0
+section .data
+abs_mask dq 0x7FFFFFFFFFFFFFFF
 
 section .text
-
-bits 64
-default rel ; to handle address relocation
-
 global x86_vector_add
-extern printf
 
 x86_vector_add:
-	sub rsp, 8*5 ; caller
-	lea rcx, [msg]
-	call printf
-	add rsp, 8*5
-	ret
+    test rcx, rcx
+    je .zero_return
+
+    lea r8, [rdx + rcx*8]
+
+    pxor xmm1, xmm1
+
+    movq xmm2, qword [rel abs_mask]
+
+.loop:
+    movsd xmm0, qword [rdx]   
+    andpd xmm0, xmm2          
+    addsd xmm1, xmm0          
+    add rdx, 8                
+    cmp rdx, r8
+    jne .loop
+
+    movsd xmm0, xmm1
+    ret
+
+.zero_return:
+    pxor xmm0, xmm0         
+    ret
