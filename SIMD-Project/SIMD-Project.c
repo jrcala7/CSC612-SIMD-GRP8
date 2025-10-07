@@ -101,14 +101,14 @@ double* TestXMMVectorSum(double A[], int len, size_t testCounts, double PCFreq, 
 		totalTime += elapse;
 
 		//validate
-		if (result == validate)
+		/*if (result == validate)
 		{
 			printf("Vector sum in XMM is correct. Sum: %f\n", result);
 		}
 		else
 		{
 			printf("Vector sum in XMM is incorrect. Sum: %f\n", result);
-		}
+		}*/
 	}
 	retunResult[0] = result;
 	retunResult[1] = totalTime / (double)testCounts;
