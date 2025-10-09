@@ -17,7 +17,7 @@ extern double ymm_vector_add_r8(size_t n, double* vec);
 extern double ymm_vector_add_rbx(size_t n, double* vec);
 
 //Length of the vector
-#define VECTOR_LEN 10000000
+#define VECTOR_LEN 1003
 
 //Vector Sum Double and Len
 DOUBLE VectorSum(double A[], int len) {
