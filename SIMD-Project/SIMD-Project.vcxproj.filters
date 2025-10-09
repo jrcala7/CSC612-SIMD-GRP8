@@ -43,5 +43,38 @@
     <None Include="ymm_func_old.asm">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Read-Me\CSC612M-G01-GRP8.docx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Read-Me\DEBUG SCREENSHOTS\DEBUG_2r05.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Read-Me\DEBUG SCREENSHOTS\DEBUG_2r15.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Read-Me\DEBUG SCREENSHOTS\DEBUG_2r20.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Read-Me\DEBUG SCREENSHOTS\DEBUG_2r26.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Read-Me\DEBUG SCREENSHOTS\DEBUG_2r30.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Read-Me\RELEASE SCREENSHOTS\RELEASE_2r05.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Read-Me\RELEASE SCREENSHOTS\RELEASE_2r15.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Read-Me\RELEASE SCREENSHOTS\RELEASE_2r20.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Read-Me\RELEASE SCREENSHOTS\RELEASE_2r26.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Read-Me\RELEASE SCREENSHOTS\RELEASE_2r30.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

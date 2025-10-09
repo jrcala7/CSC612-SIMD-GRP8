@@ -191,6 +191,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Read-Me\CSC612M-G01-GRP8.docx" />
     <None Include="ymm_func_old.asm" />
     <CustomBuild Include="ymm_func_r8.asm">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -210,6 +211,18 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nasm.exe -f win64 ymm_func_rbx.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ymm_func_rbx.obj</Outputs>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Read-Me\DEBUG SCREENSHOTS\DEBUG_2r05.png" />
+    <Image Include="Read-Me\DEBUG SCREENSHOTS\DEBUG_2r15.png" />
+    <Image Include="Read-Me\DEBUG SCREENSHOTS\DEBUG_2r20.png" />
+    <Image Include="Read-Me\DEBUG SCREENSHOTS\DEBUG_2r26.png" />
+    <Image Include="Read-Me\DEBUG SCREENSHOTS\DEBUG_2r30.png" />
+    <Image Include="Read-Me\RELEASE SCREENSHOTS\RELEASE_2r05.png" />
+    <Image Include="Read-Me\RELEASE SCREENSHOTS\RELEASE_2r15.png" />
+    <Image Include="Read-Me\RELEASE SCREENSHOTS\RELEASE_2r20.png" />
+    <Image Include="Read-Me\RELEASE SCREENSHOTS\RELEASE_2r26.png" />
+    <Image Include="Read-Me\RELEASE SCREENSHOTS\RELEASE_2r30.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
