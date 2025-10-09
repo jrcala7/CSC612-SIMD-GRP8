@@ -27,8 +27,7 @@ L1:
 
 LoopDone: 
     and eax, 1             
-    cmp eax, 0
-    je NoRemainder
+    jz NoRemainder
 
     vmovdqu xmm0, [r8]   
     vandpd xmm0, xmm0, [abs_mask]

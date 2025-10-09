@@ -201,7 +201,7 @@ void CheckValueValid(double ref, double val) {
 
 	//validate
 	int refInt = round(ref * 1000);
-	int valInt = round(ref * 1000);
+	int valInt = round(val * 1000);
 
 	if (refInt == valInt)
 	{
