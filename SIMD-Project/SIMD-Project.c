@@ -17,7 +17,7 @@ extern double ymm_vector_add_r8(size_t n, double* vec);
 extern double ymm_vector_add_rbx(size_t n, double* vec);
 
 //Length of the vector
-#define VECTOR_LEN 1003
+#define VECTOR_LEN 1073741824
 
 //Vector Sum Double and Len
 DOUBLE VectorSum(double A[], int len) {
@@ -244,10 +244,10 @@ int main(int argc, char* argv[]) {
 	
 	printf("\nTesting in YMM\n");
 	double aveTimeYMM = TestYMMVectorSum(vec, VECTOR_LEN, testCounts, PCFreq);
-	printf("\nTesting in YMM(R8)\n");
-	double aveTimeYMMR8 = TestYMMVectorSumR8(vec, VECTOR_LEN, testCounts, PCFreq);
-	printf("\nTesting in YMM(RBX)\n");
-	double aveTimeYMMRBX = TestYMMVectorSumRBX(vec, VECTOR_LEN, testCounts, PCFreq);
+	//printf("\nTesting in YMM(R8)\n");
+	//double aveTimeYMMR8 = TestYMMVectorSumR8(vec, VECTOR_LEN, testCounts, PCFreq);
+	//printf("\nTesting in YMM(RBX)\n");
+	//double aveTimeYMMRBX = TestYMMVectorSumRBX(vec, VECTOR_LEN, testCounts, PCFreq);
 
 	printf("\nTesting in XMM\n");
 	double* aveTimeXMM = TestXMMVectorSum(vec, VECTOR_LEN, testCounts, PCFreq, C_VecSum);
@@ -266,8 +266,8 @@ int main(int argc, char* argv[]) {
 	printf("\nVector Sum in YMM: %#.3f\n", ymmSum);
 	CheckValueValid(C_VecSum, ymmSum);
 	printf("Average Time after %u tests in YMM: %f ms\n", (int)testCounts, aveTimeYMM);
-	printf("Average Time after %u tests in YMM(r8): %f ms\n", (int)testCounts, aveTimeYMMR8);
-	printf("Average Time after %u tests in YMM(rbx): %f ms\n", (int)testCounts, aveTimeYMMRBX);
+	//printf("Average Time after %u tests in YMM(r8): %f ms\n", (int)testCounts, aveTimeYMMR8);
+	//printf("Average Time after %u tests in YMM(rbx): %f ms\n", (int)testCounts, aveTimeYMMRBX);
 
 	printf("\nVector Sum in XMM: %#.3f\n", aveTimeXMM[0]);
 	CheckValueValid(C_VecSum, aveTimeXMM[0]);

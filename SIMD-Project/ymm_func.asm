@@ -58,7 +58,7 @@ bound:
 fin:    
     
     vhaddpd ymm0, ymm0, ymm0
-    vpermpd ymm1, ymm0, 0b00_01_10_11
+    vperm2f128 ymm1, ymm0, ymm0, 0b0_000_0_001
     vaddpd ymm0, ymm0, ymm1
         
     ret
