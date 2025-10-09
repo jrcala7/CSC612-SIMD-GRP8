@@ -1,20 +1,15 @@
-; assembly part using x86-64
-section .data 
-msg_abssum db "Answer = %.16f",10,0 
-abs_mask dq 0x7fffffffffffffff, 0x7fffffffffffffff  
+; assembly part using SIMD xmm registers
+section .data  
+abs_mask dq 0x7fffffffffffffff, 0x7fffffffffffffff 
 
 section .text
-
 bits 64
 default rel ; to handle address relocation
-
-global xmm_vector_add
-extern printf
+global xmm_vector_add 
 
 xmm_vector_add:   
     mov r8, rdx  
-    mov eax, ecx  
-    ;mov ecx, eax
+    mov eax, ecx   
     shr ecx, 1    
 
     vxorpd xmm1, xmm1, xmm1

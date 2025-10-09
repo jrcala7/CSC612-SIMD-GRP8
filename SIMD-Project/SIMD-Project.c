@@ -9,7 +9,7 @@
 #include <time.h>
 
 extern double ymm_vector_add(size_t n, double* vec);
-extern double xmm_vector_add(int len, double* A);
+extern double xmm_vector_add(size_t len, double* A);
 extern double x86_vector_add(size_t n, double* vec);
 extern void buffer_asm(size_t n, double* vec);
 
@@ -74,9 +74,8 @@ double TestYMMVectorSum(double A[], int len, size_t testCounts, double PCFreq) {
 	return totalTime / (double)testCounts;
 }
 
-//Using XMM Registers
-//Using XMM Registers
-double* TestXMMVectorSum(double A[], int len, size_t testCounts, double PCFreq, double validate) {
+//Using XMM Registers 
+double* TestXMMVectorSum(double A[], int len, size_t testCounts, double PCFreq) {
 	static double retunResult[2]; // static so it persists after function returns
 	double totalTime = 0;
 	LARGE_INTEGER li;
@@ -86,8 +85,7 @@ double* TestXMMVectorSum(double A[], int len, size_t testCounts, double PCFreq, 
 
 	for (int i = 0; i < testCounts; i++) {
 		QueryPerformanceCounter(&li);
-		start = li.QuadPart;
-		// len = len / 2;
+		start = li.QuadPart; 
 
 		 //Vector Sum Function Here
 		result = xmm_vector_add(len, A);
@@ -99,16 +97,6 @@ double* TestXMMVectorSum(double A[], int len, size_t testCounts, double PCFreq, 
 		printf("Test %u: Time in XMM = %f ms\n", (i + 1), elapse);
 
 		totalTime += elapse;
-
-		//validate
-		/*if (result == validate)
-		{
-			printf("Vector sum in XMM is correct. Sum: %f\n", result);
-		}
-		else
-		{
-			printf("Vector sum in XMM is incorrect. Sum: %f\n", result);
-		}*/
 	}
 	retunResult[0] = result;
 	retunResult[1] = totalTime / (double)testCounts;
@@ -197,7 +185,7 @@ int main(int argc, char* argv[]) {
 	printf("\nTesting in YMM\n");
 	double aveTimeYMM = TestYMMVectorSum(vec, VECTOR_LEN, testCounts, PCFreq);
 	printf("\nTesting in XMM\n");
-	double* aveTimeXMM = TestXMMVectorSum(vec, VECTOR_LEN, testCounts, PCFreq, C_VecSum);
+	double* aveTimeXMM = TestXMMVectorSum(vec, VECTOR_LEN, testCounts, PCFreq);
 	printf("\nTesting in x86_64\n");
 	double aveTimeX86 = TestX86VectorSum(vec, VECTOR_LEN, testCounts, PCFreq);
 	
