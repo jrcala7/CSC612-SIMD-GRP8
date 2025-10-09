@@ -192,6 +192,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ymm_func_old.asm" />
+    <CustomBuild Include="ymm_func_r8.asm">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">nasm.exe -f win64 ymm_func_r8.asm</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ymm_func_r8.obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nasm.exe -f win64 ymm_func_r8.asm</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ymm_func_r8.obj</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </CustomBuild>
+    <CustomBuild Include="ymm_func_rbx.asm">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">nasm.exe -f win64 ymm_func_rbx.asm</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ymm_func_rbx.obj</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nasm.exe -f win64 ymm_func_rbx.asm</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ymm_func_rbx.obj</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

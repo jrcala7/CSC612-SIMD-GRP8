@@ -32,6 +32,12 @@
     <CustomBuild Include="buffer.asm">
       <Filter>Source Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="ymm_func_r8.asm">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ymm_func_rbx.asm">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <None Include="ymm_func_old.asm">

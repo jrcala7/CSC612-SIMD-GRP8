@@ -11,23 +11,24 @@ section .text
 bits 64
 default rel ; to handle address relocation
 
-global ymm_vector_add
-ymm_vector_add:
+global ymm_vector_add_r8
+ymm_vector_add_r8:
     vxorpd ymm0, ymm0, ymm0
     vxorpd ymm3, ymm3, ymm3
     vmovdqu ymm2, [varAll]
 
+    lea r8, [rdx]
     mov rax, rcx
     shr rcx, 2    
         
 L1:
-    vmovdqu ymm1, [rdx]
+    vmovdqu ymm1, [r8]
     vandpd ymm1, ymm1, [varAll]
     
     ;Add all values first vertically
     vaddpd ymm0, ymm0, ymm1
     
-    add rdx, 32
+    add r8, 32
     loop L1
 
 
@@ -36,7 +37,7 @@ L1:
 
     ; Remainder
 
-    vmovdqu ymm1, [rdx]
+    vmovdqu ymm1, [r8]
 
     cmp rax, 1
     jnz m2 
