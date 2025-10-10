@@ -8,11 +8,11 @@
 
 | LEN | DEBUG | RELEASE |
 | ----- | :---: | :---: |
-| **25** | **![][image1]** | **![][image2]** |
-| **215** | **![][image3]** | **![][image4]** |
-| **220** | **![][image5]** | **![][image6]** |
-| **226** | **![][image7]** | **![][image8]** |
-| **230** | **![][image9]** | **![][image10]** |
+| **25** | **![image1](imgs/image1.png)** | **![image2](imgs/image2.png)** |
+| **215** | **![image3](imgs/image3.png)** | **![image4](imgs/image4.png)** |
+| **220** | **![image5](imgs/image5.png)** | **![image6](imgs/image6.png)** |
+| **226** | **![image7](imgs/image7.png)** | **![image8](imgs/image8.png)** |
+| **230** | **![image9](imgs/image9.png)** | **![image10](imgs/image10.png)** |
 
 2. # **Comparative Table of Results**
 
