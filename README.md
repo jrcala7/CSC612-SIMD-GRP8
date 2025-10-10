@@ -32,10 +32,10 @@
 **As seen in Table I, all kernels had an increasing execution speed as the configuration of the vector length increases. To further compare each execution time per kernel, the speed up computation used was Amdahl’s Law with the following formula:**  
 		
 
-|  |  | Execution TimeOLD |
+|  |  | Execution Time<sub>OLD</sub> |
 | ----- | :---- | :---: |
-| **Speed UpOVERALL** | **\=** | **————————————————** |
-|  |  | **Execution TimeNEW** |
+| **Speed Up<sub>OVERALL</sub>** | **\=** | **————————————————** |
+|  |  | **Execution Time<sub>NEW</sub>** |
 
 **This is because each kernel was developed separately without intentionally improving singular parts of the previous implementation.**
 
@@ -53,7 +53,7 @@
 
 **With the x86\_64, it had a consistent speed up from 2.061 and above, which peaked at 2.238 as seen in Table II. It is almost the same with XMM, but with a higher speed up rate from 2.519 and peaking at 4.167.** 
 
-**On the other hand, YMM had a smaller speed up at the first vector size configuration, reaching 1.511. Although, starting with 215, it drastically sped up to 5.037 and peaked at 5.338. It eventually stayed above 4.611 on the succeeding configurations.** 
+**On the other hand, YMM had a smaller speed up at the first vector size configuration, reaching 1.511. Although, starting with 2<sup>15</sup>, it drastically sped up to 5.037 and peaked at 5.338. It eventually stayed above 4.611 on the succeeding configurations.** 
 
 **These results show that the assembly kernels were able to speed up the original C kernel in debug mode. The X86\_64 kernel more than doubled the original with XMM kernel further speeding up the C kernel execution time by at most 3-fold. The initial small speed up of YMM could be from the small vector size at the first configuration, but was able to catch up once the vector size became bigger, reaching a 4-fold speed up.**
 
@@ -211,8 +211,8 @@
 * **YMM:** When adding a buffer.asm that was supposed to test the speed of accessing the ASM file and returning some value to C, it did little effect on the execution time. We were expecting that the handshakes between C and ASM would take a longer time, but the buffer was not able to reflect that.  
     
 * **YMM:** Experimented with using registers *r8* and *rbx*, instead of *rdx* for accessing the contents of the vector. Initial runs yielded a very fast execution time when using the *rbx* register on the machine, but after multiple tests/reruns, the execution time became similar with *rdx* and *r8*. Eventually, *rbx* became unusable in Release mode as it suddenly throws memory violation errors. It might be an unexpected glitch from the machine, which eventually normalized when the *rbx* became unusable.  
-    
-    
+
+   **![image16](imgs/image16.png)**
     
 * **XMM vs. YMM:** Expecting that YMM will be faster than XMM in execution time, but based on our runs, XMM sometimes became neck and neck with YMM’s execution time. It is possible that YMM can still be optimized.  
     
