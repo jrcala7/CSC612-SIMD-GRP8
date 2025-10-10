@@ -8,11 +8,11 @@
 
 | LEN | DEBUG | RELEASE |
 | ----- | :---: | :---: |
-| **25** | **![image1](imgs/image1.png)** | **![image2](imgs/image2.png)** |
-| **215** | **![image3](imgs/image3.png)** | **![image4](imgs/image4.png)** |
-| **220** | **![image5](imgs/image5.png)** | **![image6](imgs/image6.png)** |
-| **226** | **![image7](imgs/image7.png)** | **![image8](imgs/image8.png)** |
-| **230** | **![image9](imgs/image9.png)** | **![image10](imgs/image10.png)** |
+| **2<sup>5</sup>** | **![image1](imgs/image1.png)** | **![image2](imgs/image2.png)** |
+| **2<sup>15</sup>** | **![image3](imgs/image3.png)** | **![image4](imgs/image4.png)** |
+| **2<sup>20</sup>** | **![image5](imgs/image5.png)** | **![image6](imgs/image6.png)** |
+| **2<sup>26</sup>** | **![image7](imgs/image7.png)** | **![image8](imgs/image8.png)** |
+| **2<sup>30</sup>** | **![image9](imgs/image9.png)** | **![image10](imgs/image10.png)** |
 
 2. # **Comparative Table of Results**
 
@@ -22,11 +22,11 @@
 
 | LEN | C | x86\_64 | XMM | YMM |
 | :---: | ----- | ----- | ----- | ----- |
-| **25** | **0.000136** | **0.000066** | **0.000054** | **0.000090** |
-| **215** | **0.062622** | **0.027978** | **0.015027** | **0.012432** |
-| **220** | **2.144089** | **1.027747** | **0.567383** | **0.401646** |
-| **226** | **139.446764** | **64.704342** | **38.476788** | **30.243802** |
-| **230** | **2224.607902** | **1031.185912** | **616.090608** | **479.020490** |
+| **2<sup>5</sup>** | **0.000136** | **0.000066** | **0.000054** | **0.000090** |
+| **2<sup>15</sup>** | **0.062622** | **0.027978** | **0.015027** | **0.012432** |
+| **2<sup>20</sup>** | **2.144089** | **1.027747** | **0.567383** | **0.401646** |
+| **2<sup>26</sup>** | **139.446764** | **64.704342** | **38.476788** | **30.243802** |
+| **2<sup>30</sup>** | **2224.607902** | **1031.185912** | **616.090608** | **479.020490** |
 
 	  
 **As seen in Table I, all kernels had an increasing execution speed as the configuration of the vector length increases. To further compare each execution time per kernel, the speed up computation used was Amdahl’s Law with the following formula:**  
@@ -37,12 +37,7 @@
 | **Speed UpOVERALL** | **\=** | **————————————————** |
 |  |  | **Execution TimeNEW** |
 
-**The Speed UpOVERALL is then subtracted by 1 and then multiplied by 100 to get the Speed UpPERCENTAGE as seen in the formula below:**
-
-|  |  |  |
-| ----- | :---- | :---: |
-| **Speed UpPERCENTAGE** | **\=** | **(Speed UpOVERALL — 1 ) \* 100**  |
-|  |  |  |
+**This is because each kernel was developed separately without intentionally improving singular parts of the previous implementation.**
 
 ### **I. C vs Assembly ASUM Kernels Speed Up Comparison**
 
@@ -50,17 +45,17 @@
 
 | LEN | C ➜ x86\_64 | C ➜ XMM | C ➜ YMM |
 | :---: | :---: | :---: | :---: |
-| **25** | **106%** | **152%** | **51%** |
-| **215** | **124%** | **317%** | **404%** |
-| **220** | **109%** | **278%** | **434%** |
-| **226** | **116%** | **262%** | **361%** |
-| **230** | **116%** | **261%** | **364%** |
+| **2<sup>5</sup>** | **2.061** | **2.519** | **1.511** |
+| **2<sup>15</sup>** | **2.238** | **4.167** | **5.037** |
+| **2<sup>20</sup>** | **2.086** | **3.779** | **5.338** |
+| **2<sup>26</sup>** | **2.155** | **3.624** | **4.611** |
+| **2<sup>30</sup>** | **2.157** | **3.611** | **4.644** |
 
-**With the x86\_64, it had a consistent speed up of 100% to 124% from every vector size it was tested with as seen in Table II. It is almost the same with XMM, but with a higher speed up rate from 150% up to 300%.** 
+**With the x86\_64, it had a consistent speed up from 2.061 and above, which peaked at 2.238 as seen in Table II. It is almost the same with XMM, but with a higher speed up rate from 2.519 and peaking at 4.167.** 
 
-**On the other hand, YMM had a smaller speed up at the first vector size configuration, reaching 50%. Although, starting with 215, it drastically sped up to 400%. It eventually stayed above 360% on the succeeding configurations.** 
+**On the other hand, YMM had a smaller speed up at the first vector size configuration, reaching 1.511. Although, starting with 215, it drastically sped up to 5.037 and peaked at 5.338. It eventually stayed above 4.611 on the succeeding configurations.** 
 
-**These results show that the assembly kernels were able to speed up the original C kernel in debug mode. The X86\_64 kernel more than doubled the original with XMM kernel further speeding the execution time. The initial small speed up of YMM could be from the small vector size at the first configuration, but was able to catch up once the vector size became bigger.**
+**These results show that the assembly kernels were able to speed up the original C kernel in debug mode. The X86\_64 kernel more than doubled the original with XMM kernel further speeding up the C kernel execution time by at most 3-fold. The initial small speed up of YMM could be from the small vector size at the first configuration, but was able to catch up once the vector size became bigger, reaching a 4-fold speed up.**
 
 ### **II. x86\_64 vs XMM and YMM Kernels Speed Up Comparison**
 
@@ -68,18 +63,18 @@
 
 | LEN | x86\_64 ➜ XMM | x86\_64 ➜ YMM |
 | :---: | :---: | :---: |
-| **25** | **22%** | **\-27%** |
-| **215** | **86%** | **125%** |
-| **220** | **81%** | **156%** |
-| **226** | **68%** | **114%** |
-| **230** | **67%** | **115%** |
+| **2<sup>5</sup>** | **1.222** | **0.733** |
+| **2<sup>15</sup>** | **1.862** | **2.250** |
+| **2<sup>20</sup>** | **1.811** | **2.559** |
+| **2<sup>26</sup>** | **1.682** | **2.139** |
+| **2<sup>30</sup>** | **1.674** | **2.153** |
 
 	  
-**At the first configuration of vector length 25, the XMM kernel was able to speed up the x86\_64 kernel by 22% as seen in Table III. With the YMM kernel however, it had a slow down of 27%, which was a bit surprising as the expectation was to have a faster execution time. This could be from the small vector size of the configuration, allowing x86\_64 to process the data faster.** 
+**At the first configuration of vector length 2<sup>5</sup>, the XMM kernel was able to speed up the x86\_64 kernel by 1.222 as seen in Table III. With the YMM kernel however, it had a slow down of 0.733, which was a bit surprising as the expectation was for it to have a faster execution time. This could be from the small vector size of the configuration, allowing x86\_64 to process the data faster.** 
 
-**After performing configurations of vector length 215 and above, both XMM and YMM kernels were able to improve the speed of the x86\_64 kernel better. The XMM  kernel was able to peak at around 86% speed up and stayed above 60%. Meanwhile, the YMM kernel was able to peak at 156% and stayed above 110%.**
+**After performing configurations of vector length 2<sup>15</sup> and above, both XMM and YMM kernels were able to improve the speed of the x86\_64 kernel better. The XMM  kernel was able to peak at 1.862 speed up, with speed ups between 1.2 \- 1.82. Meanwhile, the YMM kernel sped down initially, but was able to recover and attain a consistent speed up of around 2.139 and above, peaking at 2.559.**
 
-**This shows that XMM and YMM kernels are great at processing very large vector sizes compared to the x86\_64 kernel. This could be from the ability of both XMM and YMM kernels to process packed data, i.e. 2 and 4 double precision floating points respectively, at a time vs a scalar double precision floating point.**
+**This shows that XMM and YMM kernels are great at processing very large vector sizes compared to the x86\_64 kernel. This could be from the ability of both XMM and YMM kernels to process packed data, e.g. 2 and 4 double precision floating point values respectively, at a time vs a one at a time scalar double precision floating point value.**
 
 ### **III. XMM vs YMM Kernel Speed Up Comparison**
 
@@ -87,15 +82,15 @@
 
 | LEN | XMM ➜ YMM |
 | :---: | :---: |
-| **25** | **\-40%** |
-| **215** | **21%** |
-| **220** | **41%** |
-| **226** | **27%** |
-| **230** | **29%** |
+| **2<sup>5</sup>** | **0.600** |
+| **2<sup>15</sup>** | **1.209** |
+| **2<sup>20</sup>** | **1.413** |
+| **2<sup>26</sup>** | **1.272** |
+| **2<sup>30</sup>** | **1.286** |
 
-**At the first configuration of vector length 25, the YMM kernel did worse than the XMM kernel, with a slow down of 40% as seen in Table IV. Once the configuration of vector length increased from 215 and above, the YMM kernel was able to perform some speed up which peaked at 41% and stayed above 20%.**
+**At the first configuration of vector length 2<sup>5</sup>, the YMM kernel did worse than the XMM kernel, with a speed up of 0.600 as seen in Table IV. Once the configuration of vector length increased from 2<sup>15</sup> and above, the YMM kernel was able to perform some speed up which peaked at 1.43 and stayed above 1.209.**
 
-**The results are quite surprising as the expectation was that the YMM kernel would be able to speed up the XMM kernel by 100% or more, given that it can process packed data twice more than the XMM kernel. The results show that it isn’t the case as some factors might have affected the speed, such as the implementation of the boundary checking, absolute value, and addition.**
+**The results are quite surprising as the expectation was that the YMM kernel would be able to speed up the XMM kernel by 2 folds or more, given that it can process packed data twice more than the XMM kernel. The results show that it isn’t the case as some factors might have affected the speed, such as the implementation of the boundary checking, absolute value, and addition.**
 
 2. ## **Release Mode**
 
@@ -103,11 +98,11 @@
 
 | LEN | C | x86\_64 | XMM | YMM |
 | :---: | ----- | ----- | ----- | ----- |
-| **25** | **0.000011** | **0.000070** | **0.000070** | **0.000038** |
-| **215** | **0.000015** | **0.028412** | **0.016946** | **0.010207** |
-| **220** | **0.000011** | **1.031012** | **0.519604** | **0.444464** |
-| **226** | **0.000017** | **64.513735** | **38.840670** | **30.690565** |
-| **230** | **0.000012** | **1033.780762** | **619.624279** | **473.207442** |
+| **2<sup>5</sup>** | **0.000011** | **0.000070** | **0.000070** | **0.000038** |
+| **2<sup>15</sup>** | **0.000015** | **0.028412** | **0.016946** | **0.010207** |
+| **2<sup>20</sup>** | **0.000011** | **1.031012** | **0.519604** | **0.444464** |
+| **2<sup>26</sup>** | **0.000017** | **64.513735** | **38.840670** | **30.690565** |
+| **2<sup>30</sup>** | **0.000012** | **1033.780762** | **619.624279** | **473.207442** |
 
    **As seen in Table V, the Release mode execution of the C kernel was able to sustain an execution speed of no more than 0.000017 ms, compared to Table I which is running in debug mode. This resulted in a large speed down with the assembly kernels that retained their behavior from the debug run.**
 
@@ -121,107 +116,107 @@
 
 | LEN | C ➜ x86\_64 | C ➜ XMM | C ➜ YMM |
 | :---: | :---: | :---: | :---: |
-| **25** | **0.157** | **0.157** | **0.289** |
-| **215** | **0.000528** | **0.000885** | **0.00147** |
-| **220** | **0.0000107** | **0.0000212** | **0.0000247** |
-| **226** | **116%** | **262%** | **361%** |
-| **230** | **116%** | **261%** | **364%** |
+| **2<sup>5</sup>** | **0.157** | **0.157** | **0.289** |
+| **2<sup>15</sup>** | **5.28x10\-4** | **8.85x10\-4** | **1.47x10\-3** |
+| **2<sup>20</sup>** | **1.07x10\-5** | **2.12x10\-5** | **2.47x10\-5** |
+| **2<sup>26</sup>** | **2.64x10\-7** | **4.38x10\-7** | **5.54x10\-7** |
+| **2<sup>30</sup>** | **1.16x10\-8** | **1.94x10\-8** | **2.54x10\-8** |
 
    
 
-   **With the x86\_64, it had a consistent speed up of 100% to 124% from every vector size it was tested with as seen in Table II. It is almost the same with XMM, but with a higher speed up rate from 150% up to 300%.** 
+   **Due to the very fast execution of the C kernel in release mode, the speed up values of all assembly kernels went down drastically as seen in Table VI. At the first configuration at vector size 2<sup>5</sup>, x86\_64 and XMM had the same speed up of 0.157. On the other hand, YMM had a speed up of 0.289, which is better than the first two assembly kernels, but not better in overall performance.**
 
    
 
-   **On the other hand, YMM had a smaller speed up at the first vector size configuration, reaching 50%. Although, starting with 215, it drastically sped up to 400%. It eventually stayed above 360% on the succeeding configurations.** 
+   **This trend continued with the succeeding configurations, getting worse and worse. This shows how  C is heavily optimized in Release mode.**
 
    
 
-   **These results show that the assembly kernels were able to speed up the original C kernel in debug mode. The X86\_64 kernel more than doubled the original with XMM kernel further speeding the execution time. The initial small speed up of YMM could be from the small vector size at the first configuration, but was able to catch up once the vector size became bigger.**
-
-   
+   **Even so, this could be different once the type of function becomes more complex than a simple absolute summation.**
 
    ### **II. x86\_64 vs XMM and YMM Kernels Speed Up Comparison**
 
-   **Table III. Speed Up Comparison of x86\_64 vs XMM and YMM Kernels in Debug Mode after 100 Runs**
+   **Table VII. Speed Up Comparison of x86\_64 vs XMM and YMM Kernels in Release Mode after 100 Runs**
 
 | LEN | x86\_64 ➜ XMM | x86\_64 ➜ YMM |
 | :---: | :---: | :---: |
-| **25** | **22%** | **\-27%** |
-| **215** | **86%** | **125%** |
-| **220** | **81%** | **156%** |
-| **226** | **68%** | **114%** |
-| **230** | **67%** | **115%** |
+| **2<sup>5</sup>** | **1.000** | **1.842** |
+| **2<sup>15</sup>** | **1.677** | **2.784** |
+| **2<sup>20</sup>** | **1.984** | **2.320** |
+| **2<sup>26</sup>** | **1.661** | **2.102** |
+| **2<sup>30</sup>** | **1.668** | **2.185** |
 
 	  
-**At the first configuration of vector length 25, the XMM kernel was able to speed up the x86\_64 kernel by 22% as seen in Table III. With the YMM kernel however, it had a slow down of 27%, which was a bit surprising as the expectation was to have a faster execution time. This could be from the small vector size of the configuration, allowing x86\_64 to process the data faster.** 
+**At the first configuration of vector length 2<sup>5</sup>, the XMM kernel had a speed up of 1.000, having the same execution time with the x86\_64 kernel. Meanwhile, the YMM kernel was able to have a speed up of 1.842, nearly doubling the speed of the x86\_64 kernel.** 
 
-**After performing configurations of vector length 215 and above, both XMM and YMM kernels were able to improve the speed of the x86\_64 kernel better. The XMM  kernel was able to peak at around 86% speed up and stayed above 60%. Meanwhile, the YMM kernel was able to peak at 156% and stayed above 110%.**
+**After performing configurations of vector length 2<sup>15</sup> and above, the XMM kernel was able to speed up the x86\_64 kernel by 1.677, peaking at 1.984. For the YMM kernel, it sped up above 2.102, peaking at 2.784.**
 
-**This shows that XMM and YMM kernels are great at processing very large vector sizes compared to the x86\_64 kernel. This could be from the ability of both XMM and YMM kernels to process packed data, i.e. 2 and 4 double precision floating points respectively, at a time vs a scalar double precision floating point.**
+**Similar to the debug comparison, XMM and YMM are great at processing very large vector sizes more quickly than the x86\_64 kernel.** 
 
 ### **III. XMM vs YMM Kernel Speed Up Comparison**
 
-**Table IV. Speed Up Comparison of x86\_64 vs XMM and YMM Kernels in Debug Mode after 100 Runs**
+**Table VIII. Speed Up Comparison of x86\_64 vs XMM and YMM Kernels in Release Mode after 100 Runs**
 
 | LEN | XMM ➜ YMM |
 | :---: | :---: |
-| **25** | **\-40%** |
-| **215** | **21%** |
-| **220** | **41%** |
-| **226** | **27%** |
-| **230** | **29%** |
+| **2<sup>5</sup>** | **1.842** |
+| **2<sup>15</sup>** | **1.660** |
+| **2<sup>20</sup>** | **1.169** |
+| **2<sup>26</sup>** | **1.266** |
+| **2<sup>30</sup>** | **1.309** |
 
-**At the first configuration of vector length 25, the YMM kernel did worse than the XMM kernel, with a slow down of 40% as seen in Table IV. Once the configuration of vector length increased from 215 and above, the YMM kernel was able to perform some speed up which peaked at 41% and stayed above 20%.**
+**At the first configuration of vector length 2<sup>5</sup>, the YMM kernel sped up to 1.842 when compared to the XMM kernel as seen in Table VIII. This is quite different and a big improvement from the debug mode where a speed up of 0.600 can be seen in Table IV.** 
 
-**The results are quite surprising as the expectation was that the YMM kernel would be able to speed up the XMM kernel by 100% or more, given that it can process packed data twice more than the XMM kernel. The results show that it isn’t the case as some factors might have affected the speed, such as the implementation of the boundary checking, absolute value, and addition.**
+**At the configuration of vector length 2<sup>15</sup> \- 2<sup>20</sup>, we can see a decline in the speed up reaching as low as 1.169. The speed up picked up again in the succeeding configurations.**
+
+**Given the results of the debug mode, the release mode was able to speed up the YMM kernels better. Still, it is lower than what was expected as YMM should’ve been able to process 4 packed double precision floating point values at a time than XMM that can do 2 packed double precision floating point values at a time. It could be that the boundary checking implementation, absolute value masking, and addition have some effects with the execution speed for each kernel.**
 
 3. # **Boundary Check**
 
-   **XMM Boundary Checking**
+1. ## **XMM Boundary Checking**
 
-**![][image11]**  
-**![][image12]**
+**![image11](imgs/image11.png)**  
+**![image12](imgs/image12.png)**
 
-	**YMM Boundary Checking**  
+2. ## **YMM Boundary Checking**
+
 	**Variables for boundary:**  
-**![][image13]**  
+**![image13](imgs/image13.png)**  
 **Setup of RAX as checker:**  
-**![][image14]**  
+**![image14](imgs/image14.png)**  
 **Boundary Checking after final loop:**  
-**![][image15]**
+**![image15](imgs/image15.png)**
 
 4. # **Others**
 
-**C**
+**AHA moments**
 
-* **No problems encountered.**  
-* **In debug mode, C has a significantly slower run time.**  
-* **In Release mode, C has a very fast execution time that leaves every kernel in the dust, regardless of array size. It exceeded my expectations.**  
-* **Thumbs up 5 stars.**
+* **C:** C in Release mode has a very fast execution time that leaves every kernel in the dust, regardless of array size.   
+    
+* **x86-64 Assembly:** Initially slower than C but it became faster after applying some modifications. 
 
-**Geena \- XMM**
+**Unique Methodology Used**
 
-* **No problems encountered.**  
-* **Using AND for masking (absolute value)**   
-* **Check if odd or even using AND instead of doing modulo**
-
-
-**Hans-x86-64**
-
-* **No problems encountered**  
-* **C was faster compared to x86\_64 initially, even in debug mode.**  
-* **After applying some modifications, x86\_64 became faster marginally.**
+* **x86-64/XMM/YMM:** Using *AND* operation for masking (absolute value).  
+    
+* **XMM:** Using *AND* operation to check if the length is odd or even instead of doing modulo or manual division by 2\.  
+    
+* **YMM:** Using *AND* with m256 instead of a YMM register yielded a marginally faster execution time.  
+    
+* **YMM:** Added a buffer.asm that tests the speed of accessing the ASM file and returning to C.
 
 
-**Lory-YMM**
+**Observations**
 
-* **No problems encountered**  
-* **Using AND and m256 instead of mov YMM, m256  yielded a marginally faster execution time**  
-* **When adding a buffer.asm that was supposed to test the speed of accessing the ASM file and returning back to C, did little effect in the execution time. We were expecting that the handshakes between C and ASM has a larger time, but buffer was not able to reflect that.**  
-* **Experimented with using r8 and rbx, instead of rdx for perusing the contents of the vector. Initial runs yielded a very fast execution time when using rbx on my machine, but  after multiple executions, it suddenly went worse that the original execution. Eventually, rbx became unusable in Release mode. It might be an unexpected outcome initially from my machine, which eventually normalized when the rbx became unusable.**  
-* **I was expecting that YMM will be faster than XMM in execution time, but  based on our runs, XMM sometimes become neck and neck with YMM’s execution time. It is possible that YMM can still optimized.**  
-* **For asum value of YMM and XMM, it starts to differ around datasets with a length of 2^20.**
+* **YMM:** When adding a buffer.asm that was supposed to test the speed of accessing the ASM file and returning some value to C, it did little effect on the execution time. We were expecting that the handshakes between C and ASM would take a longer time, but the buffer was not able to reflect that.  
+    
+* **YMM:** Experimented with using registers *r8* and *rbx*, instead of *rdx* for accessing the contents of the vector. Initial runs yielded a very fast execution time when using the *rbx* register on the machine, but after multiple tests/reruns, the execution time became similar with *rdx* and *r8*. Eventually, *rbx* became unusable in Release mode as it suddenly throws memory violation errors. It might be an unexpected glitch from the machine, which eventually normalized when the *rbx* became unusable.  
+    
+    
+    
+* **XMM vs. YMM:** Expecting that YMM will be faster than XMM in execution time, but based on our runs, XMM sometimes became neck and neck with YMM’s execution time. It is possible that YMM can still be optimized.  
+    
+* **XMM/YMM:** For the return value from the XMM and YMM kernels, the double asum result is not always the same, from the vector size of 2<sup>20</sup> and above, as compared to the value of x86\_64 and C kernels. We were thinking that it may be due to the values of the C and x86\_64 kernels handling scalar double precision floating point values, compared to the handling of packed doubled precision floating point values in the XMM and YMM kernels.
 
 [image1]: <data:image/png;base64,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>
 
